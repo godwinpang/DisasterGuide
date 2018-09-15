@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="motherNature.css">
+
+    <title>Mother Nature</title>
+</head>
+<body>
+    <h2>Conjure up exciting events for planet Earth!</h2>
+    
+    <form id="disasterSpecs">
+        <input type="radio" name="disasterType" value="earthquake" reqiured> Earthquake
+        <input type="radio" name="disasterType" value="hurricane"> Hurricane
+        <input type="radio" name="disasterType" value="wildefire"> Wildfire
+        
+        <br>
+        <br>
+
+        
+        <label>Longitude: </label>
+        <input type="text" name="longitude" placeholder="[-180.0, 180.0]" required> 
+        <br>
+
+        <label>Latitude: </label> 
+        <input type="text" name="latitude" placeholder="[-90.0, 90.0]" required> 
+        <br> 
+
+        <label>Radius of Impact (mi): </label>  
+        <input type="text" name="radius" placeholder="[0.01, 100.0] miles" required> 
+        <br> 
+
+        <label>Severity: </label>  
+        <input type="text" name="severity" placeholder="[1.0, 10.0]" required> 
+        <br> 
+
+
+        <br> 
+        <input type="button" value="Submit" onclick="conjureDisaster();">
+    </form>
+    <script src="./motherNature.js"></script>
+</body>
+</html>
+

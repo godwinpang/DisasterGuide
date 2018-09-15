@@ -10,8 +10,9 @@ target 'DisasterGuide' do
   pod 'PromiseKit', '~> 6.0'
   pod 'TextFieldEffects'
   pod 'SwiftyJSON'
-  pod 'ChameleonFramework/Swift'
+  # pod 'ChameleonFramework/Swift'
   pod 'GoogleMaps'
+  pod 'Parse'
 
 
   target 'DisasterGuideTests' do
