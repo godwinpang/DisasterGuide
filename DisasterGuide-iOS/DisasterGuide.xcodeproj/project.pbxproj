@@ -13,7 +13,10 @@
 		5A260B3C214D861600F70432 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A260B3A214D861600F70432 /* LaunchScreen.storyboard */; };
 		5A260B47214D861600F70432 /* DisasterGuideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A260B46214D861600F70432 /* DisasterGuideTests.swift */; };
 		5A260B52214D861600F70432 /* DisasterGuideUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A260B51214D861600F70432 /* DisasterGuideUITests.swift */; };
-		5A70001A214D9AA700E9AF44 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A700019214D9AA700E9AF44 /* LoginViewController.swift */; };
+		5AD4C1C3214DA3D1004CD63C /* DisasterGuide.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 5AD4C1BC214DA3D1004CD63C /* DisasterGuide.xcworkspace */; };
+		5AD4C1C7214DA411004CD63C /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4C1C6214DA411004CD63C /* SignupViewController.swift */; };
+		5AD4C1C9214DA45B004CD63C /* SignupUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4C1C8214DA45B004CD63C /* SignupUtils.swift */; };
+		5AD4C1CB214DA667004CD63C /* SafeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4C1CA214DA667004CD63C /* SafeViewController.swift */; };
 		98080691893FDB623611A009 /* Pods_DisasterGuideTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A3AA9D1B40ED4247553B6B /* Pods_DisasterGuideTests.framework */; };
 		D8F339E5F32CA70E28B45EF4 /* Pods_DisasterGuideUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 638CEA0D43E27231B424829D /* Pods_DisasterGuideUITests.framework */; };
 		F4F217B06655A31AFB96BA85 /* Pods_DisasterGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0CAB976E121B7E4D3B9C1E3 /* Pods_DisasterGuide.framework */; };
@@ -50,7 +53,10 @@
 		5A260B4D214D861600F70432 /* DisasterGuideUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisasterGuideUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A260B51214D861600F70432 /* DisasterGuideUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisasterGuideUITests.swift; sourceTree = "<group>"; };
 		5A260B53214D861600F70432 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5A700019214D9AA700E9AF44 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = ViewControllers/LoginViewController.swift; sourceTree = "<group>"; };
+		5AD4C1BC214DA3D1004CD63C /* DisasterGuide.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = DisasterGuide.xcworkspace; sourceTree = "<group>"; };
+		5AD4C1C6214DA411004CD63C /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
+		5AD4C1C8214DA45B004CD63C /* SignupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUtils.swift; sourceTree = "<group>"; };
+		5AD4C1CA214DA667004CD63C /* SafeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeViewController.swift; sourceTree = "<group>"; };
 		604B244C7E3058567C7AA594 /* Pods-DisasterGuideUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisasterGuideUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DisasterGuideUITests/Pods-DisasterGuideUITests.release.xcconfig"; sourceTree = "<group>"; };
 		604D910D5048D5D3DE618F5C /* Pods-DisasterGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisasterGuide.release.xcconfig"; path = "Pods/Target Support Files/Pods-DisasterGuide/Pods-DisasterGuide.release.xcconfig"; sourceTree = "<group>"; };
 		638CEA0D43E27231B424829D /* Pods_DisasterGuideUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DisasterGuideUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				5A260B30214D861600F70432 /* DisasterGuide */,
+				5AD4C1BC214DA3D1004CD63C /* DisasterGuide.xcworkspace */,
 				5A260B45214D861600F70432 /* DisasterGuideTests */,
 				5A260B50214D861600F70432 /* DisasterGuideUITests */,
 				5A260B2F214D861600F70432 /* Products */,
@@ -126,10 +133,12 @@
 			children = (
 				5A260B31214D861600F70432 /* AppDelegate.swift */,
 				5A260B35214D861600F70432 /* Main.storyboard */,
-				5A700019214D9AA700E9AF44 /* LoginViewController.swift */,
+				5AD4C1CA214DA667004CD63C /* SafeViewController.swift */,
 				5A260B38214D861600F70432 /* Assets.xcassets */,
 				5A260B3A214D861600F70432 /* LaunchScreen.storyboard */,
 				5A260B3D214D861600F70432 /* Info.plist */,
+				5AD4C1C6214DA411004CD63C /* SignupViewController.swift */,
+				5AD4C1C8214DA45B004CD63C /* SignupUtils.swift */,
 			);
 			path = DisasterGuide;
 			sourceTree = "<group>";
@@ -279,6 +288,7 @@
 			files = (
 				5A260B3C214D861600F70432 /* LaunchScreen.storyboard in Resources */,
 				5A260B39214D861600F70432 /* Assets.xcassets in Resources */,
+				5AD4C1C3214DA3D1004CD63C /* DisasterGuide.xcworkspace in Resources */,
 				5A260B37214D861600F70432 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,8 +417,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A70001A214D9AA700E9AF44 /* LoginViewController.swift in Sources */,
+				5AD4C1C7214DA411004CD63C /* SignupViewController.swift in Sources */,
+				5AD4C1CB214DA667004CD63C /* SafeViewController.swift in Sources */,
 				5A260B32214D861600F70432 /* AppDelegate.swift in Sources */,
+				5AD4C1C9214DA45B004CD63C /* SignupUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
