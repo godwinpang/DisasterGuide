@@ -1,0 +1,6 @@
+framework module Pods_DisasterGuideTests {
+  umbrella header "Pods-DisasterGuideTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
