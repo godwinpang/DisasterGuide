@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.7.3)
   - Bolts/Tasks (1.9.0)
+  - Font-Awesome-Swift (1.7.2)
   - GoogleMaps (2.7.0):
     - GoogleMaps/Maps (= 2.7.0)
   - GoogleMaps/Base (2.7.0)
@@ -24,6 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - Font-Awesome-Swift (~> 1.7.2)
   - GoogleMaps
   - Parse
   - PromiseKit (~> 6.0)
@@ -34,6 +36,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - Bolts
+    - Font-Awesome-Swift
     - GoogleMaps
     - Parse
     - PromiseKit
@@ -43,12 +46,13 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  Font-Awesome-Swift: 83ab9db365379ee6025167cec67bdc5d3226a811
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   Parse: d3edaf8c7c722cb33cb83ba7821d015ae32d362d
   PromiseKit: e1425568123ec844a944c93f2bcb29d511d39cf5
   SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
   TextFieldEffects: 4ee41b5216e674d55fb6ac25107bf1af7629176f
 
-PODFILE CHECKSUM: 80d2284c45c824340d1c653317271b9041a29ca2
+PODFILE CHECKSUM: 8fb3944ebd8a162642025bbb353268a5cae59dea
 
 COCOAPODS: 1.5.3

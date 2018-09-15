@@ -13,6 +13,7 @@ target 'DisasterGuide' do
   # pod 'ChameleonFramework/Swift'
   pod 'GoogleMaps'
   pod 'Parse'
+  pod 'Font-Awesome-Swift', '~> 1.7.2'
 
 
   target 'DisasterGuideTests' do
