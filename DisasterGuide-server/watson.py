@@ -123,6 +123,12 @@ def server_get_context(uid):
 ##########################
 
 def parse_help_request(uid, text):
+    """
+    Function which is run when POST request is made to Watson API
+    :param uid: UUID representing ID of user
+    :param text: text transcription of user input
+    :return: dictionary representing response of POST request
+    """
     response = watson_assistant.message(
         watson_workspace_id,
         input={'text': text},
