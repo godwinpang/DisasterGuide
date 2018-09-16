@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		50B9E0CAAD2CEAA2FC2DA3B1 /* Pods_DisasterGuideUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6231B4994B3320709F4FACBB /* Pods_DisasterGuideUITests.framework */; };
 		5A041D59214E446700471890 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A041D58214E446700471890 /* Constants.swift */; };
+		5A041D5B214E7FBC00471890 /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 5A041D5A214E7FBC00471890 /* style.json */; };
 		5A260B32214D861600F70432 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A260B31214D861600F70432 /* AppDelegate.swift */; };
 		5A260B37214D861600F70432 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A260B35214D861600F70432 /* Main.storyboard */; };
 		5A260B39214D861600F70432 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A260B38214D861600F70432 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 /* Begin PBXFileReference section */
 		29501A3514BB8956F26D4469 /* Pods-DisasterGuideTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DisasterGuideTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DisasterGuideTests/Pods-DisasterGuideTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5A041D58214E446700471890 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5A041D5A214E7FBC00471890 /* style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
 		5A260B2E214D861600F70432 /* DisasterGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisasterGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A260B31214D861600F70432 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5A260B36214D861600F70432 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				5A52CC22214DDA7900E18130 /* DisasterViewController.swift */,
 				5A260B35214D861600F70432 /* Main.storyboard */,
 				5AD4C1CA214DA667004CD63C /* SafeViewController.swift */,
+				5A041D5A214E7FBC00471890 /* style.json */,
 				5A260B38214D861600F70432 /* Assets.xcassets */,
 				5A260B3A214D861600F70432 /* LaunchScreen.storyboard */,
 				5A260B3D214D861600F70432 /* Info.plist */,
@@ -298,6 +301,7 @@
 				5A260B3C214D861600F70432 /* LaunchScreen.storyboard in Resources */,
 				5A260B39214D861600F70432 /* Assets.xcassets in Resources */,
 				5AD4C1C3214DA3D1004CD63C /* DisasterGuide.xcworkspace in Resources */,
+				5A041D5B214E7FBC00471890 /* style.json in Resources */,
 				5A260B37214D861600F70432 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

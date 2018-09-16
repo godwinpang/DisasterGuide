@@ -38,32 +38,24 @@ class SafeViewController: UIViewController {
         
         let disaster_radius_squared = disaster_radius*disaster_radius
         
-        var returnArr = ["hi"]
+        print(url+"/getallusers")
         
         //Make POST request for all user locations
         Alamofire.request(url+"/getallusers").responseJSON { response in
-            /*switch response.result {
-            //get the JSON
-            case .success(let value):
-                let jsonString = JSON(value)
-                print(jsonString)
-                //returnArr = self.parseJSON(json: jsonString)
-            case .failure(let error):
-                print(error)
-                returnArr = ["failure"]
-            }
-             */
+
             let jsonString = response.result.value
+            print(type(of: jsonString))
             print(jsonString)
+            self.parseJSON(json: JSON(jsonString), disaster_longitude: disaster_longitude, disaster_latitude: disaster_latitude, disaster_radius: disaster_radius)
             
         }
         
         
-        return returnArr
+        return []
     }
     
-    func parseJSON(json: JSON, disaster_longitude: Double, disaster_latitude: Double, disaster_radius: Double) -> [(Double?, Double?)] {
-        var locations = [] as [(Double?, Double?)]
+    func parseJSON(json: JSON, disaster_longitude: Double, disaster_latitude: Double, disaster_radius: Double) -> [(Double?, Double?, Int?, String?, String?)] {
+        var locations = [] as [(Double?, Double?, Int?, String?, String?)]
         //check if the request was successful
         //get location data and filter into location list
         
@@ -72,6 +64,9 @@ class SafeViewController: UIViewController {
             let longitude = location["longitude"].double
             //&& if let date_created = location["date_created"]
             //The earth is flat, especially since no one lives in antartica
+            let age = location["age"].int
+            let role = location["role"].string
+            let status = location["status"].string
             let Deltaphi = longitude!-disaster_longitude
             let Deltatheta = latitude!-disaster_latitude
             
@@ -86,14 +81,14 @@ class SafeViewController: UIViewController {
 
             
             let distance_squared = ds2_dphi2*Deltaphi*Deltaphi + ds2_dtheta2*Deltatheta*Deltatheta
-            if(distance_squared < disaster_radius_squared)
-            {
-                print("test")
-                locations.append((latitude, longitude))
-            }
+ 
+                locations.append((latitude, longitude, age, role, status))
         }
         
-        return locations as! [(Double?, Double?)]
+        print(locations)
+        print(locations[0].0)
+        
+        return locations
     }
 
     
