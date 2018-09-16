@@ -71,7 +71,7 @@ class Database:
         """
         self.cur.execute(
             'SELECT latitude, longitude, date_created FROM locations WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id,))
-        return self.cur.fetchall()[0]
+        return self.cur.fetchone()
 
     def get_past_locations(self, user_id):
         """
@@ -92,7 +92,7 @@ class Database:
         most to least recent
         """
         self.cur.execute(
-            'SELECT DISTINCT ON (locations.user_id) locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.user_id')
+            'SELECT DISTINCT ON (locations.user_id) locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.user_id ORDER BY locations.user_id, locations.date_created DESC')
         return self.cur.fetchall()
 
     def log_help_call(self, user_id, description, watson_context, distress_status=None):
@@ -119,16 +119,11 @@ class Database:
 
     def get_watson_context(self, user_id):
         """
-        Adds a new entry to the help_log representing a message from the user. Additionally, this function adds a log
-        entry to distress_log if distress_status can be inferred from the message, as set in the parameters.
+        Retrieves latest Watson context from help_log based on user_id.
         :param user_id: a string representing the UUID of the user of interest.
-        :param description: a string representing a free-text description of the log entry, typically including the
-        message that the user gave to the service
-        :param watson_context: a JSON object representing the context information of Watson IBM
-        :param distress_status: a boolean representing whether the message provided by the user invoked a setting of
-        the current distress status.
-        :return: True if successful
+        :return: dict of context if a prior Watson context was found, or otherwise None
         """
+        # TODO: need to fix this to somehow capture that conversations can be broken up
         self.cur.execute('SELECT watson_context FROM help_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id, ))
         response = self.cur.fetchone()
         return response[0] if response is not None else None
@@ -159,3 +154,42 @@ class Database:
         """
         self.cur.execute('SELECT distress_status FROM distress_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id,))
         return self.cur.fetchone()[0]
+
+    def log_disaster(self, disaster_id, disaster_type, latitude, longitude, radius, severity):
+        """
+        Logs disaster in database.
+        :param disaster_id: a UUID representing the disaster
+        :param disaster_type: a string representing a brief description of the disaster
+        :param latitude: a float representing the latitudinal position of the center of the disaster
+        :param longitude: a float representing the longitudinal position of the center of the disaster
+        :param radius: a float representing the radius around the center of the disaster
+        :param severity: a ranking of how severe the disaster notification is
+        :return: True if successful
+        """
+        self.cur.execute('SELECT disaster_id FROM disaster_log WHERE disaster_id = %s OR (center_latitude = %s AND center_longitude = %s)', (disaster_id, latitude, longitude))
+        response = self.cur.fetchone()
+        if response is None:
+            self.cur.execute('INSERT INTO disasters (disaster_id, disaster_type) VALUES (%s, %s)', (disaster_id, disaster_type))
+        else:
+            disaster_id = response[0]
+        entry_id = str(uuid())
+        self.cur.execute('INSERT INTO disaster_log (entry_id, disaster_id, center_latitude, center_longitude, radius, severity) VALUES (%s, %s, %s, %s, %s, %s)', (entry_id, disaster_id, latitude, longitude, radius, severity))
+        return True
+
+    def get_severe_disasters(self, severity_threshold):
+        """
+        Retrieves all severe disasters.
+        :return: list of dictionaries with data on severe disasters
+        """
+        self.cur.execute('SELECT DISTINCT ON (disaster_log.disaster_id) disaster_log.disaster_id, disaster_type, center_latitude, center_longitude, radius, severity FROM disasters, disaster_log WHERE disasters.disaster_id = disaster_log.disaster_id ORDER BY disaster_log.disaster_id, disaster_log.date_created DESC')
+        response = self.cur.fetchall()
+        return [
+            {
+                "type": r[1],
+                "center_latitude": r[2],
+                "center_longitude": r[3],
+                "radius": r[4],
+                "severity": r[5]
+            }
+            for r in response if severity_threshold(r[1], r[5])
+        ]

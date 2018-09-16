@@ -1,6 +1,6 @@
 # JSON specifications
 
-## POST /adduser
+## `POST /adduser HTTP/1.1`
 
 POST request syntax:
 ```
@@ -25,7 +25,7 @@ POST response syntax:
 }
 ```
 
-## POST /getuser
+## `POST /getuser HTTP/1.1`
 
 POST request syntax:
 ```
@@ -47,7 +47,7 @@ POST response syntax:
 }
 ```
 
-## POST /addlocation
+## `POST /addlocation HTTP/1.1`
 
 POST request syntax:
 ```
@@ -66,7 +66,7 @@ POST response syntax:
 }
 ```
 
-## POST /getlocation
+## `POST /getlocation HTTP/1.1`
 
 POST request syntax:
 ```
@@ -86,7 +86,7 @@ POST response syntax:
 }
 ```
 
-## POST /getlocationhistory
+## `POST /getlocationhistory HTTP/1.1`
 
 POST request syntax:
 ```
@@ -111,7 +111,7 @@ POST response syntax:
 }
 ```
 
-## GET /getallusers
+## `GET /getallusers HTTP/1.1`
 
 GET response syntax:
 ```
@@ -131,7 +131,7 @@ GET response syntax:
 
 Note that the points returned in the response are given in chronological order from most to least recent.
 
-## POST /help
+## `POST /help HTTP/1.1`
 
 POST request syntax:
 ```
@@ -149,5 +149,66 @@ POST response syntax:
 {
     "success": True/False
     "failure_reason": <Description of failure if success is False, else None>
+}
+```
+
+## `POST /getwatsoncontext HTTP/1.1`
+
+POST request syntax:
+```
+{
+    "user_id": <str representing UUID of user>
+    ""
+}
+```
+
+POST response syntax:
+```
+{
+    "success": True/False
+    "failure_reason": <Description of failure if success is False, else None>,
+    "context": <dict representing the last recorded Watson context>
+}
+```
+
+## `POST /adddisaster HTTP/1.1`
+
+POST request syntax:
+```
+{
+    "disaster_id": <str representing UUID of disaster>,
+    "disaster_type": <str representing type of natural disaster ("earthquake", "hurricane", etc.)>,
+    "latitude": <float representing latitude of approximate center of natural disaster>,
+    "longitude": <float representing longitude of approximate center of natural disaster>,
+    "radius": <float representing radius of natural disaster>,
+    "severity": <float giving approximate severity level, in different scales according to the type>
+}
+```
+
+POST response syntax:
+```
+{
+    "success": True/False
+    "failure_reason": <Description of failure if success is False, else None>
+}
+```
+
+## `GET /getdisasters HTTP/1.1`
+
+GET response syntax:
+```
+{
+    "success": True/False
+    "failure_reason": <Description of failure if success is False, else None>,
+    "disasters": [
+        {
+            "type": <str representing type of natural disaster ("earthquake", "hurricane", etc.)>,
+            "center_latitude": <float representing latitude of approximate center of natural disaster>,
+            "center_longitude": <float representing longitude of approximate center of natural disaster>,
+            "radius": <float representing radius of natural disaster>,
+            "severity": <float giving approximate severity level, in different scales according to the type>
+        }
+        ...
+    ]
 }
 ```

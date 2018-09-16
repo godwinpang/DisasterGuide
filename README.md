@@ -7,3 +7,4 @@
 To run the test suite, you will need the following packages:
 * jq - used to pretty print JSON responses
 * watson-developer-cloud - IBM Watson's Python SDK
+* websockets - used to create a web socket for receiving disaster information

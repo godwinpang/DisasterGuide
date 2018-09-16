@@ -12,7 +12,7 @@ def handler(database):
 
     return {
         "success": True,
-        "failure_reason": None,
+        "failure_reason": "None",
         "data": [
             {
                 "first_name": u[1],

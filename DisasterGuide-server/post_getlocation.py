@@ -19,7 +19,7 @@ def handler(database, event):
 
     return {
         "success": True,
-        "failure_reason": None,
+        "failure_reason": "None",
         "latitude": latitude,
         "longitude": longitude,
         "date_created": str(date_created.isoformat())
