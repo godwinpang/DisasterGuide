@@ -225,7 +225,8 @@ GET response syntax:
 POST request syntax:
 ```
 {
-    "text": <str representing user input>
+    "text": <str representing user input>,
+    "user_id": <str representing UUID of user>
 }
 ```
 
