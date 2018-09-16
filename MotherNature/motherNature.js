@@ -39,7 +39,8 @@ function conjureDisaster() {
     var latitude = specs.latitude.value;
     var radius = specs.radius.value;
     var severity = specs.severity.value;
-    sendDisaster(specs, type, longitude, latitude, radius, severity)
+    var message = disasterJSON(specs, type, longitude, latitude, radius, severity)
+    connection.send(message);
 }
 
 function disasterJSON(specs, type, longitude, latitude, radius, severity) {
