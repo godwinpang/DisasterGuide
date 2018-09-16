@@ -1,6 +1,8 @@
 # Python
 __pycache__/
 
+build_db/
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
