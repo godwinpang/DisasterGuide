@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS public.users
 (
  user_id uuid PRIMARY KEY,
- first_name text NOT NULL UNIQUE DEFAULT 'N/A',
- last_name text NOT NULL UNIQUE DEFAULT 'N/A',
+ first_name text NOT NULL DEFAULT 'N/A',
+ last_name text NOT NULL DEFAULT 'N/A',
  birthday DATE NOT NULL CHECK (birthday <= date_created) DEFAULT '1970-01-01',
  role text NOT NULL DEFAULT 'N/A',
  date_modified TIMESTAMP WITH TIME ZONE NOT NULL CHECK (date_modified >= date_created) DEFAULT clock_timestamp(),

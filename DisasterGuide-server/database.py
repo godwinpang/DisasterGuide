@@ -153,7 +153,8 @@ class Database:
         :return: a boolean representing whether the user currently has his distress beacon active or not
         """
         self.cur.execute('SELECT distress_status FROM distress_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id,))
-        return self.cur.fetchone()[0]
+        response = self.cur.fetchone()
+        return response[0] if response is not None else False
 
     def log_disaster(self, disaster_id, disaster_type, latitude, longitude, radius, severity):
         """
