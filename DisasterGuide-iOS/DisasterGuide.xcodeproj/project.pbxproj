@@ -15,6 +15,7 @@
 		5A260B47214D861600F70432 /* DisasterGuideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A260B46214D861600F70432 /* DisasterGuideTests.swift */; };
 		5A260B52214D861600F70432 /* DisasterGuideUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A260B51214D861600F70432 /* DisasterGuideUITests.swift */; };
 		5A52CC21214DC6AC00E18130 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52CC20214DC6AC00E18130 /* UIUtils.swift */; };
+		5A52CC23214DDA7900E18130 /* DisasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52CC22214DDA7900E18130 /* DisasterViewController.swift */; };
 		5AD4C1C3214DA3D1004CD63C /* DisasterGuide.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = 5AD4C1BC214DA3D1004CD63C /* DisasterGuide.xcworkspace */; };
 		5AD4C1C7214DA411004CD63C /* SignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4C1C6214DA411004CD63C /* SignupViewController.swift */; };
 		5AD4C1C9214DA45B004CD63C /* SignupUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD4C1C8214DA45B004CD63C /* SignupUtils.swift */; };
@@ -55,6 +56,7 @@
 		5A260B51214D861600F70432 /* DisasterGuideUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisasterGuideUITests.swift; sourceTree = "<group>"; };
 		5A260B53214D861600F70432 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A52CC20214DC6AC00E18130 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
+		5A52CC22214DDA7900E18130 /* DisasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisasterViewController.swift; sourceTree = "<group>"; };
 		5AD4C1BC214DA3D1004CD63C /* DisasterGuide.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = DisasterGuide.xcworkspace; sourceTree = "<group>"; };
 		5AD4C1C6214DA411004CD63C /* SignupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupViewController.swift; sourceTree = "<group>"; };
 		5AD4C1C8214DA45B004CD63C /* SignupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUtils.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				5A260B31214D861600F70432 /* AppDelegate.swift */,
+				5A52CC22214DDA7900E18130 /* DisasterViewController.swift */,
 				5A260B35214D861600F70432 /* Main.storyboard */,
 				5AD4C1CA214DA667004CD63C /* SafeViewController.swift */,
 				5A260B38214D861600F70432 /* Assets.xcassets */,
@@ -427,6 +430,7 @@
 				5AD4C1CB214DA667004CD63C /* SafeViewController.swift in Sources */,
 				5A260B32214D861600F70432 /* AppDelegate.swift in Sources */,
 				5AD4C1C9214DA45B004CD63C /* SignupUtils.swift in Sources */,
+				5A52CC23214DDA7900E18130 /* DisasterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
