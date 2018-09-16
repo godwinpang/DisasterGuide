@@ -128,7 +128,7 @@ class Database:
         response = self.cur.fetchone()
         return response[0] if response is not None else None
 
-    def init_distress_status(self, user_id):
+    def init_distress_status(self, user_id, distress_status):
         """
         Adds a new entry to the help_log representing a message from the user. Additionally, this function adds a log
         entry to distress_log if distress_status can be inferred from the message, as set in the parameters.
@@ -143,7 +143,7 @@ class Database:
         distress_entry_id = str(uuid())
         self.cur.execute(
             'INSERT INTO distress_log (entry_id, user_id, help_log_id, distress_status) VALUES (%s, %s, %s, %s)',
-            (distress_entry_id, user_id, Database.NULL_UUID, False))
+            (distress_entry_id, user_id, Database.NULL_UUID, distress_status))
         return True
 
     def get_distress_status(self, user_id):

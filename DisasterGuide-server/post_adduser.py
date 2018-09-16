@@ -12,6 +12,7 @@ def handler(database, event):
         last_name = event["last_name"]
         birthday = event["birthday"]
         role = event["role"]
+        distress_status = event["distress_status"] if "distress_status" in event else False
     except KeyError as e:
         return {
             "success": False,
@@ -20,7 +21,7 @@ def handler(database, event):
         }
 
     user_id = database.add_user(first_name, last_name, date(birthday["year"], birthday["month"], birthday["day"]), role, user_id)
-    database.init_distress_status(user_id)
+    database.init_distress_status(user_id, distress_status)
 
     return {
         "success": True,

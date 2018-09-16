@@ -13,7 +13,8 @@ POST request syntax:
         "day": <int representing day>,
         "year": <int representing year>
     },
-    "role": <"first_responder" OR "user">
+    "role": <"first_responder" OR "user">,
+    "distress_status": <bool representing distress beacon status; default False>
 }
 ```
 
