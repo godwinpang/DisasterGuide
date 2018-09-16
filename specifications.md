@@ -220,7 +220,7 @@ GET response syntax:
 }
 ```
 
-## `POST` Watson API
+## `POST https://gateway-wdc.watsonplatform.net/assistant/api`
 
 POST request syntax:
 ```
