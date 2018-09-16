@@ -4,6 +4,7 @@ import psycopg2 as pg
 import datetime
 from dateutil.relativedelta import relativedelta
 from uuid import uuid4 as uuid
+import json
 
 class Database:
 
@@ -109,12 +110,28 @@ class Database:
         help_entry_id = str(uuid())
         distress_entry_id = str(uuid())
         self.cur.execute('INSERT INTO help_log (entry_id, user_id, description, watson_context) VALUES (%s, %s, %s, %s)',
-                         (help_entry_id, user_id, description, watson_context))
+                         (help_entry_id, user_id, description, json.dumps(watson_context)))
         if distress_status is not None:
             self.cur.execute(
                 'INSERT INTO distress_log (entry_id, user_id, help_log_id, distress_status) VALUES (%s, %s, %s, %s)',
                 (distress_entry_id, user_id, help_entry_id, distress_status))
         return True
+
+    def get_watson_context(self, user_id):
+        """
+        Adds a new entry to the help_log representing a message from the user. Additionally, this function adds a log
+        entry to distress_log if distress_status can be inferred from the message, as set in the parameters.
+        :param user_id: a string representing the UUID of the user of interest.
+        :param description: a string representing a free-text description of the log entry, typically including the
+        message that the user gave to the service
+        :param watson_context: a JSON object representing the context information of Watson IBM
+        :param distress_status: a boolean representing whether the message provided by the user invoked a setting of
+        the current distress status.
+        :return: True if successful
+        """
+        self.cur.execute('SELECT watson_context FROM help_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id, ))
+        response = self.cur.fetchone()
+        return response[0] if response is not None else None
 
     def init_distress_status(self, user_id):
         """

@@ -1,0 +1,23 @@
+{
+  "user_id": "f095544c-9074-4678-8a4b-de2aab6e9d1f",
+  "description": "This is a test description.",
+  "watson_context": {
+    "conversation_id": "a8472b01-f37f-4c80-a132-5b1c0b6c7a3c",
+    "system": {
+      "dialog_stack": [
+        {
+          "dialog_node": "Welcome"
+        }
+      ],
+      "dialog_turn_counter": 1,
+      "dialog_request_counter": 1,
+      "_node_output_map": {
+        "Welcome": {
+          "0": [
+            0
+          ]
+        }
+      }
+    }
+  }
+}

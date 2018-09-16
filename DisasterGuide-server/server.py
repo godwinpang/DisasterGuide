@@ -12,6 +12,7 @@ import post_getallusers
 import post_adduser
 import post_getuser
 import post_help
+import post_getwatsoncontext
 import json
 from database import *
 
@@ -31,7 +32,8 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         "/getlocation": post_getlocation.handler,
         "/getlocationhistory": post_getlocationhistory.handler,
         "/getallusers": post_getallusers.handler,
-        "/help": post_help.handler
+        "/help": post_help.handler,
+        "/getwatsoncontext": post_getwatsoncontext.handler
     }
 
     GET_REQUESTS = {

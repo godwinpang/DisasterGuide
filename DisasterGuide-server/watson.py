@@ -1,4 +1,6 @@
 from watson_developer_cloud import AssistantV1
+import requests
+import json
 
 watson_apikey = "KFS4CrDKubCAT5WhGHXYbX9K1zHVCrwgWhgWOBzXaVXW"
 watson_url = "https://gateway-wdc.watsonplatform.net/assistant/api"
@@ -8,21 +10,95 @@ watson_assistant = AssistantV1(
     iam_apikey = watson_apikey,
     url = watson_url)
 
+SERVER_HOST = "http://localhost:8088"
+
+HEADERS = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+}
+
 #TODO: fill in these functions to interface with database and client
-def help_nothing(uid, text):
-    return
+def help_nothing(uid, text, context):
+    body = {
+        "user_id": uid,
+        "description": text,
+        "watson_context": context
+    }
 
-def help_prompt(uid, text):
-    return
+    try:
+        return requests.post(SERVER_HOST + "/help", headers=HEADERS, data=json.dumps(body))
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return {
+            "success": False,
+            "failure_reason": "No connection could be established."
+        }
 
-def help_distress(uid, text):
-    return
+def help_prompt(uid, text, context):
+    body = {
+        "user_id": uid,
+        "description": text,
+        "watson_context": context
+    }
 
-def help_cancel_distress(uid, text):
-    return
+    try:
+        return requests.post(SERVER_HOST + "/help", headers=HEADERS, data=json.dumps(body))
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return {
+            "success": False,
+            "failure_reason": "No connection could be established."
+        }
 
-def help_error(uid, text):
-    return
+def help_distress(uid, text, context):
+    body = {
+        "user_id": uid,
+        "description": text,
+        "watson_context": context,
+        "distress_status": True
+    }
+
+    try:
+        return requests.post(SERVER_HOST + "/help", headers=HEADERS, data=json.dumps(body))
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return {
+            "success": False,
+            "failure_reason": "No connection could be established."
+        }
+
+def help_cancel_distress(uid, text, context):
+    body = {
+        "user_id": uid,
+        "description": text,
+        "watson_context": context,
+        "distress_status": False
+    }
+
+    try:
+        return requests.post(SERVER_HOST + "/help", headers=HEADERS, data=json.dumps(body))
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return {
+            "success": False,
+            "failure_reason": "No connection could be established."
+        }
+
+def help_error(uid, text, context):
+    body = {
+        "user_id": uid,
+        "description": text,
+        "watson_context": context
+    }
+
+    try:
+        return requests.post(SERVER_HOST + "/help", headers=HEADERS, data=json.dumps(body))
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return {
+            "success": False,
+            "failure_reason": "No connection could be established."
+        }
 
 command_table = {
     "0":help_nothing,
@@ -32,36 +108,29 @@ command_table = {
     "E":help_error,
 }
 
-#TODO: replace these with the real server functions
-watsons_contexts = {}
 def server_get_context(uid):
-    return watsons_contexts[uid] if uid in watsons_contexts else None
+    body = {
+        "user_id": uid
+    }
 
-def server_set_context(uid, context):
-    watsons_contexts[uid] = context
+    try:
+        response = requests.post(SERVER_HOST + "/getwatsoncontext", headers=HEADERS, data=json.dumps(body))
+        return response.json()["context"]
+    except requests.exceptions.ConnectionError:
+        print("ERROR: no connection could be established.")
+        return None
+
 ##########################
 
 def parse_help_request(uid, text):
     response = watson_assistant.message(
         watson_workspace_id,
-        input = {'text': text},
-        context = server_get_context(uid)
+        input={'text': text},
+        context=server_get_context(uid)
     ).get_result()
 
-    server_set_context(uid, response["context"])
     output_text = response["output"]["text"][0]
     command = output_text[0]
     response_speech = output_text[1:]
-    command_table[command](uid, text)
+    command_table[command](uid, text, response["context"])
     return response_speech
-
-#TODO: remove this
-uid = 0
-while True:
-    in_text = input(">> ")
-    command_end = in_text.find(" ")
-    if in_text[:command_end] == "setuid":
-        uid = int(in_text[command_end+1:])
-        print("set uid to %d"%(uid))
-    else:
-        print(parse_help_request(uid, in_text))

@@ -136,7 +136,11 @@ Note that the points returned in the response are given in chronological order f
 POST request syntax:
 ```
 {
-    "user_id": <str representing UUID of user>
+    "user_id": <str representing UUID of user>,
+    "description": <str representing description of user's input in text>,
+    "watson_context": <dict structure representing Watson's context>,
+    "distress_status": <bool representing distress beacon status>
+    ""
 }
 ```
 
@@ -144,11 +148,6 @@ POST response syntax:
 ```
 {
     "success": True/False
-    "failure_reason": <Description of failure if success is False, else None>,
-    "first_name": <str representing first name>,
-    "last_name": <str representing last name>,
-    "age": <int representing age>,
-    "role": <"first_responder" OR "user">,
-    "distress_status" <True OR False>
+    "failure_reason": <Description of failure if success is False, else None>
 }
 ```
