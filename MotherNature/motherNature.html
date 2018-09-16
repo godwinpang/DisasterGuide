@@ -5,40 +5,97 @@
     <link type="text/css" rel="stylesheet" href="motherNature.css">
 
     <title>Mother Nature</title>
+
+    <style>
+      #mapbox {
+      position: fixed; /* Sit on top of the page content */
+      display: block;
+      width: 100%; /* Full width (cover the whole page) */
+      height: 100%; /* Full height (cover the whole page) */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0); /* Black background with opacity */
+      z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
+      cursor: pointer; /* Add a pointer on hover */
+      }
+
+      #map {
+      width: 100%;
+      height: 100%;
+      background-color: grey;
+      }
+
+      #formbox {
+      position: fixed;
+      display: block;
+      width: 300px;
+      height: 160px;
+      left: 0px;
+      bottom: 0px;
+      color: white;
+      background-color: rgba(0,0,0,0.65);
+      z-index: 2;
+      cursor: pointer;
+      padding: 10px;
+      text-align: right;
+      }
+
+      #canvasbox {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: fixed;
+      pointer-events:none;
+      }
+
+      #overlay_canvas {
+      width:100%;
+      height:100%;
+      }
+    </style>
 </head>
 <body>
-    <h2>Conjure up exciting events for planet Earth!</h2>
-    
+  <div id="mapbox">
+    <div id="map"></div>
+  </div>
+  <div id="formbox">
     <form id="disasterSpecs">
-        <input type="radio" name="disasterType" value="earthquake" reqiured> Earthquake
-        <input type="radio" name="disasterType" value="hurricane"> Hurricane
-        <input type="radio" name="disasterType" value="wildefire"> Wildfire
-        
-        <br>
-        <br>
+      <input type="radio" name="disasterType" value="earthquake" reqiured> Earthquake
+      <input type="radio" name="disasterType" value="hurricane"> Hurricane
+      <input type="radio" name="disasterType" value="wildefire"> Wildfire
 
-        
-        <label>Longitude: </label>
-        <input type="text" name="longitude" placeholder="[-180.0, 180.0]" required> 
-        <br>
-
-        <label>Latitude: </label> 
-        <input type="text" name="latitude" placeholder="[-90.0, 90.0]" required> 
-        <br> 
-
-        <label>Radius of Impact (mi): </label>  
-        <input type="text" name="radius" placeholder="[0.01, 100.0] miles" required> 
-        <br> 
-
-        <label>Severity: </label>  
-        <input type="text" name="severity" placeholder="[1.0, 10.0]" required> 
-        <br> 
+      <br>
+      <br>
 
 
-        <br> 
-        <input type="button" value="Submit" onclick="conjureDisaster();">
+      <label>Longitude: </label>
+      <input type="text" name="longitude" placeholder="[-180.0, 180.0]" required>
+      <br>
+
+      <label>Latitude: </label>
+      <input type="text" name="latitude" placeholder="[-90.0, 90.0]" required>
+      <br>
+
+      <label>Radius of Impact (mi): </label>
+      <input type="number" name="radius" placeholder="[0.01, 100.0] miles" required>
+      <br>
+
+      <label>Severity: </label>
+      <input type="text" name="severity" placeholder="[1.0, 10.0]" required>
+      <br>
+
+
+      <br>
+      <input type="button" value="Submit" onclick="conjureDisaster();">
     </form>
-    <script src="./motherNature.js"></script>
+  </div>
+  <div id="canvasbox">
+    <canvas id="overlay_canvas"></canvas>
+  </div>
+  <script src="./motherNature.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBH9q4yYkye0JXft9jl91vutPRkk467bLA&callback=init_map" async defer></script>
 </body>
 </html>
-
