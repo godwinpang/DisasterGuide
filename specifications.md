@@ -239,3 +239,21 @@ POST response syntax:
     "response": <str representing Watson's response to user>
 }
 ```
+
+## `POST /resetbeacon HTTP/1.1`
+
+POST request syntax:
+```
+{
+    "user_id": <str representing UUID of user>,
+    "distress_status": <bool representing distress beacon status; default False>
+}
+```
+
+POST response syntax:
+```
+{
+    "success": True/False,
+    "failure_reason": <Description of failure if success is False, else None>
+}
+```

@@ -15,6 +15,7 @@ import post_getuser
 import post_help
 import post_getwatsoncontext
 import post_adddisaster
+import post_resetbeacon
 import watson
 from database import *
 import asyncio
@@ -69,7 +70,8 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         "/help": post_help.handler,
         "/getwatsoncontext": post_getwatsoncontext.handler,
         "/adddisaster": post_adddisaster.handler,
-        "/watson": watson.parse_help_request
+        "/watson": watson.parse_help_request,
+        "/resetbeacon": post_resetbeacon.handler
     }
 
     GET_REQUESTS = {
