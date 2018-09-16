@@ -15,6 +15,7 @@ def handler(database, event):
     except KeyError as e:
         return {
             "success": False,
+            "user_id": None,
             "failure_reason": str(e)
         }
 
@@ -23,5 +24,6 @@ def handler(database, event):
 
     return {
         "success": True,
+        "user_id": user_id,
         "failure_reason": "None"
     }

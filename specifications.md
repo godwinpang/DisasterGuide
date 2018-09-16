@@ -20,8 +20,9 @@ POST request syntax:
 POST response syntax:
 ```
 {
-    "success": True/False
-    "failure_reason": <Description of failure if success is False, else None>,
+    "success": True/False,
+    "user_id": <str representing UUID of user>
+    "failure_reason": <Description of failure if success is False, else None>
 }
 ```
 

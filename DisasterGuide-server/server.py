@@ -21,10 +21,13 @@ import websockets
 from threading import Thread
 from uuid import uuid4 as uuid
 
-EARTHQUAKE_THRESHOLD = 7.0  # magnitude from 1 to 10
-HURRICANE_THRESHOLD = 3  # Saffir-Simpson Hurricane Wind Scale; 1 to 5
-WILDFIRE_THRESHOLD = 3  # Wildland Urban Interface Hazard Scale; 3D scale from 1 to 4 each dimension
-TORNADO_THRESHOLD = 3  # Fujita scale; 0 to 5
+def normalize_1_to_10(value, min, max):
+    return (value - min + 1) / max * 10
+
+EARTHQUAKE_THRESHOLD = normalize_1_to_10(7.0, 1, 10)  # magnitude from 1 to 10
+HURRICANE_THRESHOLD = normalize_1_to_10(3, 1, 5)  # Saffir-Simpson Hurricane Wind Scale; 1 to 5
+WILDFIRE_THRESHOLD = normalize_1_to_10(3, 1, 4)  # Wildland Urban Interface Hazard Scale; 3D scale from 1 to 4 each dimension
+TORNADO_THRESHOLD = normalize_1_to_10(3, 0, 5)  # Fujita scale; 0 to 5
 
 OUTGOING_IP_ADDRESS = "0.0.0.0"
 WEB_SOCKET_SERVER_PORT = 8085
