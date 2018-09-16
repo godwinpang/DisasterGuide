@@ -219,3 +219,22 @@ GET response syntax:
     ]
 }
 ```
+
+## `POST` Watson API
+
+POST request syntax:
+```
+{
+    "text": <str representing user input>
+}
+```
+
+POST response syntax:
+```
+{
+    "success": True/False,
+    "failure_reason": <Description of failure if success is False, else None>,
+    "is_prompt": <True if Watson is prompting user for another response>,
+    "response": <str representing Watson's response to user>
+}
+```
