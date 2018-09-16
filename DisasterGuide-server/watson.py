@@ -133,4 +133,9 @@ def parse_help_request(uid, text):
     command = output_text[0]
     response_speech = output_text[1:]
     command_table[command](uid, text, response["context"])
-    return response_speech
+    return {
+        "success": True,
+        "failure_reason": "None",
+        "is_prompt": command == "P",
+        "response": response_speech
+    }
