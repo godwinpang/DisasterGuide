@@ -10,7 +10,8 @@ def handler(database, event):
         return {
             "success": False,
             "failure_reason": str(e),
-            "location": None,
+            "latitude": None,
+            "longitude": None,
             "date_created": None
         }
 
@@ -18,7 +19,8 @@ def handler(database, event):
 
     return {
         "success": True,
-        "failure_reason": "None",
-        "location": [latitude, longitude],
+        "failure_reason": None,
+        "latitude": latitude,
+        "longitude": longitude,
         "date_created": date_created
     }

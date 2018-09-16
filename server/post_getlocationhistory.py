@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Implementation for POST request for /getalllocations
+Implementation for POST request for /getlocationhistory
 """
 
 def handler(database, event):

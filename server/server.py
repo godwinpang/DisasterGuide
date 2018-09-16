@@ -7,7 +7,8 @@ for Python 3.
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import post_addlocation
 import post_getlocation
-import post_getalllocations
+import post_getlocationhistory
+import post_getallusers
 import post_adduser
 import post_getuser
 import post_help
@@ -26,7 +27,8 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
     POST_REQUESTS = {
         "/addlocation": post_addlocation.handler,
         "/getlocation": post_getlocation.handler,
-        "/getalllocations": post_getalllocations.handler,
+        "/getlocationhistory": post_getlocationhistory.handler,
+        "/getallusers": post_getallusers.handler,
         "/help": post_help.handler,
         "/adduser": post_adduser.handler,
         "/getuser": post_getuser.handler

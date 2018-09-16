@@ -79,6 +79,17 @@ class Database:
             'SELECT latitude, longitude, date_created FROM locations WHERE user_id=%s ORDER BY date_created DESC', (user_id,))
         return self.cur.fetchall()
 
+    def get_all_users(self):
+        """
+        Retrieve all of the recorded locations for a specified user in the location log.
+        :param user_id: a string representing the UUID of the user of interest.
+        :return: a list of all tuples of (latitude (float), longitude (float), date_created (datetime)), ordered from
+        most to least recent
+        """
+        self.cur.execute(
+            'SELECT locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.location_id')
+        return self.cur.fetchall()
+
     def log_help_call(self, user_id, description, watson_context, distress_status=None):
         """
         Adds a new entry to the help_log representing a message from the user. Additionally, this function adds a log
