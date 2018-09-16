@@ -2,9 +2,12 @@
 
 import psycopg2 as pg
 import datetime
+from dateutil.relativedelta import relativedelta
 from uuid import uuid4 as uuid
 
 class Database:
+
+    NULL_UUID = "00000000-0000-0000-0000-000000000000"
 
     def __init__(self, host, port, db_name, username, password):
         self.host = host
@@ -20,20 +23,20 @@ class Database:
         self.conn.autocommit = True
         self.cur = self.conn.cursor()
 
-    def add_user(self, first_name, last_name, birthday, user_id=None):
+    def add_user(self, first_name, last_name, birthday, role, user_id=None):
         """
         Add user to database.
         :param first_name: a string representing the first name of the user
         :param last_name: a string representing the last name of the user
         :param birthday: a date object representing the birthday of the user (to compte the age, for medical purposes)
         :param user_id: a string representing a UUID for the user. Will be automatically generated if not provided
-        :return: True if successful
+        :return: a string representing the UUID of the user
         """
         if user_id is None:
             user_id = str(uuid())
-        self.cur.execute('INSERT INTO users (user_id, first_name, last_name, birthday) VALUES (%s, %s, %s, %s)',
-                         (user_id, first_name, last_name, birthday))
-        return True
+        self.cur.execute('INSERT INTO users (user_id, first_name, last_name, birthday, role) VALUES (%s, %s, %s, %s, %s)',
+                         (user_id, first_name, last_name, birthday, role))
+        return user_id
 
     def get_user_info(self, user_id):
         """
@@ -42,8 +45,9 @@ class Database:
         :return: a tuple of the form (first_name <str>, last_name <str>, age <int>, role <str>)
         """
         self.cur.execute('SELECT first_name, last_name, birthday, role FROM users WHERE user_id=%s', (user_id, ))
-        first_name, last_name, birthday, role = self.cur.fetchall()[0][0]
-        return first_name, last_name, (datetime.datetime.now() - birthday).years, role
+        result = self.cur.fetchall()
+        first_name, last_name, birthday, role = result[0]
+        return first_name, last_name, relativedelta(datetime.datetime.now().date(), birthday).years, role
 
     def log_location(self, user_id, latitude, longitude):
         """
@@ -87,7 +91,7 @@ class Database:
         most to least recent
         """
         self.cur.execute(
-            'SELECT locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.location_id')
+            'SELECT DISTINCT ON (locations.user_id) locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.user_id')
         return self.cur.fetchall()
 
     def log_help_call(self, user_id, description, watson_context, distress_status=None):
@@ -112,12 +116,29 @@ class Database:
                 (distress_entry_id, user_id, help_entry_id, distress_status))
         return True
 
+    def init_distress_status(self, user_id):
+        """
+        Adds a new entry to the help_log representing a message from the user. Additionally, this function adds a log
+        entry to distress_log if distress_status can be inferred from the message, as set in the parameters.
+        :param user_id: a string representing the UUID of the user of interest.
+        :param description: a string representing a free-text description of the log entry, typically including the
+        message that the user gave to the service
+        :param watson_context: a JSON object representing the context information of Watson IBM
+        :param distress_status: a boolean representing whether the message provided by the user invoked a setting of
+        the current distress status.
+        :return: True if successful
+        """
+        distress_entry_id = str(uuid())
+        self.cur.execute(
+            'INSERT INTO distress_log (entry_id, user_id, help_log_id, distress_status) VALUES (%s, %s, %s, %s)',
+            (distress_entry_id, user_id, Database.NULL_UUID, False))
+        return True
+
     def get_distress_status(self, user_id):
         """
         Retrieve latest distress status of specified user based on distress log.
         :param user_id: a string representing the UUID of the user of interest.
         :return: a boolean representing whether the user currently has his distress beacon active or not
         """
-        self.cur.execute(
-            'SELECT distress_status FROM distress_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id,))
-        return self.cur.fetchone()[0][0]
+        self.cur.execute('SELECT distress_status FROM distress_log WHERE user_id=%s ORDER BY date_created DESC LIMIT 1', (user_id,))
+        return self.cur.fetchone()[0]

@@ -25,13 +25,17 @@ def get_content_length(headers):
 
 class CustomRequestHandler(BaseHTTPRequestHandler):
     POST_REQUESTS = {
+        "/adduser": post_adduser.handler,
+        "/getuser": post_getuser.handler,
         "/addlocation": post_addlocation.handler,
         "/getlocation": post_getlocation.handler,
         "/getlocationhistory": post_getlocationhistory.handler,
         "/getallusers": post_getallusers.handler,
-        "/help": post_help.handler,
-        "/adduser": post_adduser.handler,
-        "/getuser": post_getuser.handler
+        "/help": post_help.handler
+    }
+
+    GET_REQUESTS = {
+        "/getallusers": post_getallusers.handler
     }
 
     def _set_headers(self):
@@ -44,8 +48,18 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         self._set_headers()
-        print(self.path)
-        self.wfile.write("<html><body><h1>Get Request Received!</h1></body></html>")
+
+        try:
+            response = CustomRequestHandler.GET_REQUESTS[self.path](database)
+
+        except KeyError as _:
+            print("Invalid path " + str(self.path) + " received.")
+            response = {"success": False, "failure_reason": "Invalid path " + str(self.path) + "."}
+
+        # send JSON response back to client
+        json_response = json.dumps(response)  # string representation
+        self.wfile.write(json_response.encode())
+        return True
 
     def do_POST(self):
         """

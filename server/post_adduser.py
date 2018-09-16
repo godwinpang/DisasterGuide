@@ -11,13 +11,15 @@ def handler(database, event):
         first_name = event["first_name"]
         last_name = event["last_name"]
         birthday = event["birthday"]
+        role = event["role"]
     except KeyError as e:
         return {
             "success": False,
             "failure_reason": str(e)
         }
 
-    database.add_user(first_name, last_name, date(birthday["year"], birthday["month"], birthday["day"]), user_id)
+    user_id = database.add_user(first_name, last_name, date(birthday["year"], birthday["month"], birthday["day"]), role, user_id)
+    database.init_distress_status(user_id)
 
     return {
         "success": True,

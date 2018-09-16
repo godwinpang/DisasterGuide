@@ -22,5 +22,5 @@ def handler(database, event):
         "failure_reason": None,
         "latitude": latitude,
         "longitude": longitude,
-        "date_created": date_created
+        "date_created": str(date_created.isoformat())
     }

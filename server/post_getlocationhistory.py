@@ -19,5 +19,5 @@ def handler(database, event):
     return {
         "success": True,
         "failure_reason": "None",
-        "locations": [{"latitude": tp[0], "longitude": tp[1], "date_created": tp[2]} for tp in past_locations]
+        "locations": [{"latitude": tp[0], "longitude": tp[1], "date_created": tp[2].isoformat()} for tp in past_locations]
     }
