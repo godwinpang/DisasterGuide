@@ -35,15 +35,15 @@ class Database:
                          (user_id, first_name, last_name, birthday))
         return True
 
-    def get_user_age(self, user_id):
+    def get_user_info(self, user_id):
         """
         Gets the age of the user specified by the user ID.
         :param user_id: a string representing the UUID of the user of interest.
-        :return: an integer representing the age of the user rounded down
+        :return: a tuple of the form (first_name <str>, last_name <str>, age <int>, role <str>)
         """
-        self.cur.execute('SELECT birthday FROM users WHERE user_id=%s', (user_id, ))
-        birthday = self.cur.fetchall()[0][0]
-        return (datetime.datetime.now() - birthday).years
+        self.cur.execute('SELECT first_name, last_name, birthday, role FROM users WHERE user_id=%s', (user_id, ))
+        first_name, last_name, birthday, role = self.cur.fetchall()[0][0]
+        return first_name, last_name, (datetime.datetime.now() - birthday).years, role
 
     def log_location(self, user_id, latitude, longitude):
         """

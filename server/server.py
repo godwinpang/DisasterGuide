@@ -1,13 +1,18 @@
 #!usr/bin/env python3
 """
-Base code pulled from https://www.codexpedia.com/python/python-web-server-for-get-and-post-requests/, adapted for
-Python 3.
+Base code loosely pulled from https://www.codexpedia.com/python/python-web-server-for-get-and-post-requests/, adapted
+for Python 3.
 """
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import post_location
+import post_addlocation
+import post_getlocation
+import post_getalllocations
+import post_adduser
+import post_getuser
 import post_help
 import json
+from database import *
 
 def get_content_length(headers):
     for tp in headers._headers:
@@ -19,8 +24,12 @@ def get_content_length(headers):
 
 class CustomRequestHandler(BaseHTTPRequestHandler):
     POST_REQUESTS = {
-        "/location": post_location.execute,
-        "/help": post_help.execute
+        "/addlocation": post_addlocation.handler,
+        "/getlocation": post_getlocation.handler,
+        "/getalllocations": post_getalllocations.handler,
+        "/help": post_help.handler,
+        "/adduser": post_adduser.handler,
+        "/getuser": post_getuser.handler
     }
 
     def _set_headers(self):
@@ -50,11 +59,11 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         print("JSON received:", body_json)
 
         try:
-            response = CustomRequestHandler.POST_REQUESTS[self.path](body_json)
+            response = CustomRequestHandler.POST_REQUESTS[self.path](database, body_json)
 
         except KeyError as _:
             print("Invalid path " + str(self.path) + " received.")
-            response = {"success": False, "failureReason": "Invalid path " + str(self.path) + "."}
+            response = {"success": False, "failure_reason": "Invalid path " + str(self.path) + "."}
 
         # send JSON response back to client
         json_response = json.dumps(response)  # string representation
@@ -68,4 +77,5 @@ def run(server_class=HTTPServer, handler_class=CustomRequestHandler, port=8088):
     httpd.serve_forever()
 
 if __name__ == '__main__':
+    database = Database("localhost", 5432, "disasterguide", "postgres", "postgres")
     run()

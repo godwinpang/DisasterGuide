@@ -3,5 +3,5 @@
 
 """
 
-def execute(event):
+def handler(database, event):
     raise NotImplementedError("post_help execute method has not been implemented yet.")
