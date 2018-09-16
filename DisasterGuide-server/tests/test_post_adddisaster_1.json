@@ -1,0 +1,8 @@
+{
+    "disaster_id": "d6ec765b-ee05-476f-8295-8b507ff75a08",
+    "disaster_type": "earthquake",
+    "latitude": 23,
+    "longitude": 45,
+    "radius": 7,
+    "severity": 5.6
+}

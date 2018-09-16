@@ -1,0 +1,23 @@
+{
+  "user_id": "957cb64c-5c73-41ff-acde-16e18326d4a9",
+  "description": "This should turn on the distress beacon.",
+  "watson_context": {
+    "conversation_id": "b4789bcf-5ac8-4b67-a91b-aefb25fa1087",
+    "system": {
+      "dialog_stack": [
+        {
+          "dialog_node": "Help"
+        }
+      ],
+      "dialog_turn_counter": 1,
+      "dialog_request_counter": 1,
+      "_node_output_map": {
+        "Help": {
+          "0": [
+            0
+          ]
+        }
+      }
+    }
+  }
+}
