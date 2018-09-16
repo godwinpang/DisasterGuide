@@ -17,7 +17,6 @@ HEADERS = {
     'Content-Type': 'application/json'
 }
 
-#TODO: fill in these functions to interface with database and client
 def help_nothing(uid, text, context):
     body = {
         "user_id": uid,
