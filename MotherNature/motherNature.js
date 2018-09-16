@@ -1,9 +1,10 @@
 "use strict"
 
-const port = 8085;
+const url = "ws://18.30.7.28:";
+const port = "8085";
 
 var connectionOpen = false;
-var connection = new WebSocket("ws://localhost:"+port);
+var connection = new WebSocket(url+port);
 
 connection.onopen = function() {
     console.log("client says: connection established!");
@@ -41,11 +42,10 @@ function conjureDisaster() {
     sendDisaster(specs, type, longitude, latitude, radius, severity)
 }
 
-function sendDisaster(specs, type, longitude, latitude, radius, severity) {
-    var message=`{"type":${type},"longitude":${longitude},"latitude":${latitude},"radius":${radius},"severity":${severity}}`;
+function disasterJSON(specs, type, longitude, latitude, radius, severity) {
+    var message=`{"type":"${type}","longitude":${longitude},"latitude":${latitude},"radius":${radius},"severity":${severity}}`;
     console.log(message);
-
-    connection.send(message);
+    return message;
 }
 
 function lerp(x0, x1, t)
@@ -56,7 +56,7 @@ function lerp(x0, x1, t)
 // Initialize and add the map
 function init_map() {
     var mit = {lat:42.3601, lng:-71.0942}
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 3, center: mit});
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 6, center: mit});
 
     map.addListener("click", function (event) {
         if(!connectionOpen) {
@@ -74,8 +74,8 @@ function init_map() {
         var latitude = specs.latitude.value;
         var radius = specs.radius.value;
         var severity = specs.severity.value;
-        var message=`{"type":${type},"longitude":${longitude},"latitude":${latitude},"radius":${radius},"severity":${severity}}`;
-        console.log(message);
+        var message = disasterJSON(specs, type, longitude, latitude, radius, severity)
+        connection.send(message);
 
         var low_r = 1.0;
         var low_g = 0.0;
@@ -103,11 +103,27 @@ function init_map() {
         });
         specs.longitude.value = coords.lng();
         specs.latitude.value = coords.lat();
+        message = disasterJSON(specs, type, longitude, latitude, radius, -1)
         marker.addListener("click", function (event){
+            if(!connectionOpen) {
+                console.log("error: connection was closed")
+            }
+            connection.send(message)
             marker.setMap(null);
+        });
 
-            //TODO: send message to server to delete
-            // connection.send(message);
+        var info=`<div>${severity} ${type} ${radius} miles around (${latitude}, ${longitude})</div>`;
+        var infowindow = new google.maps.InfoWindow({content: info});
+        infowindow.setPosition(coords)
+
+        marker.addListener("mouseover", function (event){
+            console.log(info);
+            infowindow.open(map, marker);
+        });
+
+        marker.addListener("mouseout", function (event){
+            console.log(info);
+            infowindow.close();
         });
 
         connection.send(message);
@@ -126,166 +142,166 @@ function place_marker()
     var coords = {lat:longitude, lng:latitude}
 }
 
-//Vertex Shader Program
-const vertex_shader_source = `
-    attribute vec4 pos;
+// //Vertex Shader Program
+// const vertex_shader_source =
+//       `
+//         in vec4 p;
+//         out vec2 uv;
 
-    uniform mat4 transform;
+//         uniform mat4 transform;
 
-    void main() {
-      gl_Position = transform*pos;
-    }
-  `;
+//         void main() {
+//         gl_Position = transform*p;
+//         uv = p.xy;
+//         }`;
 
-//Fragment Shader Source
-const fragment_shader_source = `
-    void main() {
-      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    }
-  `;
+// //Fragment Shader Source
+// const fragment_shader_source =
+//       `
+//         in vec2 uv;
 
-//Load Shader of given a type and source
-function load_shader(gl, type, source) {
-    const shader = gl.createShader(type);
+//         void main() {
+//         gl_FragColor = vec4(uv.x, 0.0, 1.0, 0.1);
+//         }`;
 
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
+// //Load Shader of given a type and source
+// function load_shader(gl, type, source) {
+//     const shader = gl.createShader(type);
 
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
-    }
+//     gl.shaderSource(shader, source);
+//     gl.compileShader(shader);
 
-    return shader;
-}
+//     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+//         alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+//         gl.deleteShader(shader);
+//         return null;
+//     }
 
-//Compile a list of shaders into a program
-function init_program(gl, types, sources)
-{
-    if(types.length != sources.length) alert('error: shader types and sources have different lengths');
+//     return shader;
+// }
 
-    var shaders = [];
-    const program = gl.createProgram();
-    for(var s = 0; s < sources.length; s++)
-    {
-        shaders[s] = load_shader(gl, types[s], sources[s]);
-        gl.attachShader(program, shaders[s]);
-    }
-    gl.linkProgram(program)
+// //Compile a list of shaders into a program
+// function init_program(gl, types, sources)
+// {
+//     if(types.length != sources.length) alert('error: shader types and sources have different lengths');
 
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(program));
-        return null;
-    }
+//     var shaders = [];
+//     const program = gl.createProgram();
+//     for(var s = 0; s < sources.length; s++)
+//     {
+//         shaders[s] = load_shader(gl, types[s], sources[s]);
+//         gl.attachShader(program, shaders[s]);
+//     }
+//     gl.linkProgram(program)
 
-    return program;
-}
+//     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+//         alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(program));
+//         return null;
+//     }
 
-function init_buffers(gl) {
-  // Create a buffer for the square's positions.
-  const vertex_buffer = gl.createBuffer();
+//     return program;
+// }
 
-  // Select the positionBuffer as the one to apply buffer
-  // operations to from here out.
+// function init_buffers(gl) {
+//     // Create a buffer for the square's positions.
+//     const vertex_buffer = gl.createBuffer();
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+//     // Select the positionBuffer as the one to apply buffer
+//     // operations to from here out.
 
-  // Now create an array of positions for the square.
+//     gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-  const positions = [
-    -1.0,  1.0,
-     1.0,  1.0,
-    -1.0, -1.0,
-     1.0, -1.0,
-  ];
+//     // Now create an array of positions for the square.
 
-  // Now pass the list of positions into WebGL to build the
-  // shape. We do this by creating a Float32Array from the
-  // JavaScript array, then use it to fill the current buffer.
+//     const positions = [
+//         -1.0,  1.0,
+//         1.0,  1.0,
+//         -1.0, -1.0,
+//         1.0, -1.0,
+//     ];
 
-  gl.bufferData(gl.ARRAY_BUFFER,
-                new Float32Array(positions),
-                gl.STATIC_DRAW);
+//     // Now pass the list of positions into WebGL to build the
+//     // shape. We do this by creating a Float32Array from the
+//     // JavaScript array, then use it to fill the current buffer.
 
-  return {position: vertex_buffer,};
-}
+//     gl.bufferData(gl.ARRAY_BUFFER,
+//                   new Float32Array(positions),
+//                   gl.STATIC_DRAW);
 
-function drawScene(gl, program_info, vertex_buffer) {
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
-    gl.clearDepth(1.0);                 // Clear everything
-    gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-    gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+//     return {position: vertex_buffer,};
+// }
 
-    transform = mat4.create()
-    mat4.translate(transform,     // destination matrix
-                   transform,     // matrix to translate
-                   [0.0, 0.0, 0.0]);  // amount to translate
+// function draw_scene(gl, program_info, vertex_buffer) {
+//     gl.clearColor(0.0, 0.0, 0.0, 0.0);  // Clear to black, fully opaque
+//     // gl.clearDepth(1.0);                 // Clear everything
+//     // gl.enable(gl.DEPTH_TEST);           // Enable depth testing
+//     // gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
 
-    {
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
-        gl.vertexAttribPointer(
-            program_info.attrib_locations.vertex_position,
-            2, //number components
-            gl.FLOAT, //type
-            false, //normalize
-            0, //bytes, 0 => calculate from number of components and type
-            0 //offset in bytes
-        );
-        gl.enableVertexAttribArray(program_info.attrib_locations.vertex_position);
-    }
+//     var transform = mat4.create()
+//     mat4.translate(transform,     // destination matrix
+//                    transform,     // matrix to translate
+//                    [0.0, 0.0, 0.0]);  // amount to translate
 
-    gl.useProgram(program_info.program);
+//     {
+//         gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer.position);
+//         gl.vertexAttribPointer(
+//             program_info.attrib_locations.vertex_position,
+//             2, //number components
+//             gl.FLOAT, //type
+//             false, //normalize
+//             0, //bytes, 0 => calculate from number of components and type
+//             0 //offset in bytes
+//         );
+//         gl.enableVertexAttribArray(program_info.attrib_locations.vertex_position);
+//     }
 
-    // Set the shader uniforms
+//     gl.useProgram(program_info.program);
 
-    gl.uniformMatrix4fv(
-        program_info.uniform_locations.transform,
-        false,
-        transform);
-    gl.uniformMatrix4fv(
-        programInfo.uniformLocations.modelViewMatrix,
-        false,
-        modelViewMatrix);
+//     // Set the shader uniforms
 
-    {
-        const offset = 0;
-        const vertexCount = 4;
-        gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
-    }
-}
+//     gl.uniformMatrix4fv(
+//         program_info.uniform_locations.transform,
+//         false,
+//         transform);
 
-function initGL()
-{
-    var canvas = document.getElementById('overlay_canvas');
-    var gl = canvas.getContext('webgl');
+//     {
+//         const offset = 0;
+//         const vertexCount = 4;
+//         gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+//     }
+// }
 
-    // Only continue if WebGL is available and working
-    if (gl === null) {
-        alert("Unable to initialize WebGL. Your browser or machine may not support it.");
-        return;
-    }
+// function initGL()
+// {
+//     var canvas = document.getElementById('overlay_canvas');
+//     var gl = canvas.getContext('webgl');
 
-    const program = init_program(gl,
-                                 [gl.VERTEX_SHADER, gl.FRAGMENT_SHADER],
-                                 [vertex_shader_source, fragment_shader_source]);
-    const program_info = {
-        program: program,
-        attrib_locations: {
-            vertex_position: gl.getAttribLocation(program, 'pos'),
-        },
-        uniform_locations: {
-            transform: gl.getUniformLocation(program, 'transform'),
-        },
-    };
+//     // Only continue if WebGL is available and working
+//     if (gl === null) {
+//         alert("Unable to initialize WebGL. Your browser or machine may not support it.");
+//         return;
+//     }
 
-    init_buffers(gl);
+//     const program = init_program(gl,
+//                                  [gl.VERTEX_SHADER, gl.FRAGMENT_SHADER],
+//                                  [vertex_shader_source, fragment_shader_source]);
+//     const program_info = {
+//         program: program,
+//         attrib_locations: {
+//             vertex_position: gl.getAttribLocation(program, 'pos'),
+//         },
+//         uniform_locations: {
+//             transform: gl.getUniformLocation(program, 'transform'),
+//         },
+//     };
 
-    //Clear the canvas
-    gl.clearColor(1.0, 0.0, 0.0, 0.5);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+//     var vertex_buffer = init_buffers(gl);
 
-}
+//     //Clear the canvas
+//     gl.clearColor(0.0, 0.0, 1.0, 0.1);
+//     gl.clear(gl.COLOR_BUFFER_BIT);
 
+//     draw_scene(gl, program_info, vertex_buffer);
+// }
 
 // initGL();

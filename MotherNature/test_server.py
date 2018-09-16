@@ -10,3 +10,5 @@ server = websockets.serve(get_disaster, 'localhost', 8085)
 
 asyncio.get_event_loop().run_until_complete(server)
 asyncio.get_event_loop().run_forever()
+
+print("test")
