@@ -18,8 +18,9 @@ def handler(database):
                 "first_name": u[1],
                 "last_name": u[2],
                 "age": relativedelta(datetime.datetime.now().date(), u[3]).years,
-                "latitude": u[4],
-                "longitude": u[5],
+                "role": u[4],
+                "latitude": u[5],
+                "longitude": u[6],
                 "status": database.get_distress_status(u[0])
             } for u in users if u[0] != database.NULL_UUID
         ]

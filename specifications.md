@@ -119,10 +119,15 @@ GET response syntax:
 {
     "success": True/False
     "failure_reason": <Description of failure if success is False, else None>,
-    "locations": [
+    "data": [
         {
+            "first_name": <str representing first name of user>,
+            "last_name": <str representing last name of user>,
+            "age": <int representing age of user>,
+            "role": <str representing role: "first_responder" OR "user">
             "latitude": <float representing latitude>,
             "longitude": <float representing longitude>,
+            "status": <bool representing state of user's distress beacon>
             "date_created": date object representing date created
         },
         ...

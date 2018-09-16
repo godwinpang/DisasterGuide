@@ -92,7 +92,7 @@ class Database:
         most to least recent
         """
         self.cur.execute(
-            'SELECT DISTINCT ON (locations.user_id) locations.user_id, first_name, last_name, birthday, latitude, longitude FROM users, locations WHERE users.user_id = locations.user_id ORDER BY locations.user_id, locations.date_created DESC')
+            'SELECT DISTINCT ON (locations.user_id) locations.user_id, first_name, last_name, birthday, role, latitude, longitude FROM users, locations WHERE users.user_id = locations.user_id ORDER BY locations.user_id, locations.date_created DESC')
         return self.cur.fetchall()
 
     def log_help_call(self, user_id, description, watson_context, distress_status=None):
