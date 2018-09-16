@@ -15,6 +15,7 @@ import post_getuser
 import post_help
 import post_getwatsoncontext
 import post_adddisaster
+import watson
 from database import *
 import asyncio
 import websockets
@@ -67,7 +68,8 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         "/getallusers": get_getallusers.handler,
         "/help": post_help.handler,
         "/getwatsoncontext": post_getwatsoncontext.handler,
-        "/adddisaster": post_adddisaster.handler
+        "/adddisaster": post_adddisaster.handler,
+        "/watson": watson.parse_help_request
     }
 
     GET_REQUESTS = {
@@ -115,7 +117,10 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         print("JSON received:", body_json)
 
         try:
-            response = CustomRequestHandler.POST_REQUESTS[self.path](database, body_json)
+            if self.path == "/watson":
+                response = CustomRequestHandler.POST_REQUESTS[self.path](body_json["user_id"], body_json["text"], database)
+            else:
+                response = CustomRequestHandler.POST_REQUESTS[self.path](database, body_json)
 
         except KeyError as _:
             print("[ ERROR ] Invalid path " + str(self.path) + " received.")
