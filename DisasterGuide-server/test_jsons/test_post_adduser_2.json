@@ -1,0 +1,11 @@
+{
+    "user_id": "957cb64c-5c73-41ff-acde-16e18326d4a9",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "birthday": {
+        "month": 6,
+        "day": 30,
+        "year": 1981
+    },
+    "role": "first_responder"
+}
