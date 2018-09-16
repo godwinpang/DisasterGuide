@@ -21,6 +21,7 @@ DerivedData/
 xcuserdata/
 
 ## Other
+*backup/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
