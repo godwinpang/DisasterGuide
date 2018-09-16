@@ -24,6 +24,7 @@ from uuid import uuid4 as uuid
 EARTHQUAKE_THRESHOLD = 7.0  # magnitude from 1 to 10
 HURRICANE_THRESHOLD = 3  # Saffir-Simpson Hurricane Wind Scale; 1 to 5
 WILDFIRE_THRESHOLD = 3  # Wildland Urban Interface Hazard Scale; 3D scale from 1 to 4 each dimension
+TORNADO_THRESHOLD = 3  # Fujita scale; 0 to 5
 
 OUTGOING_IP_ADDRESS = "0.0.0.0"
 WEB_SOCKET_SERVER_PORT = 8085
@@ -46,6 +47,8 @@ def severity_threshold(type, severity):
         return severity >= HURRICANE_THRESHOLD
     elif type == "wildfire":
         return severity >= WILDFIRE_THRESHOLD
+    elif type == "tornado":
+        return severity >= TORNADO_THRESHOLD
     else:
         print("[ WARNING ] Natural disaster type " + str(type) + " is not currently supported in determining severity.")
         return False
