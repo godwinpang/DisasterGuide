@@ -22,7 +22,13 @@ from threading import Thread
 from uuid import uuid4 as uuid
 
 EARTHQUAKE_THRESHOLD = 7.0  # magnitude from 1 to 10
-HURRICANE_THRESHOLD = 3  # Saffir-Simpson Hurricane Wind Scale
+HURRICANE_THRESHOLD = 3  # Saffir-Simpson Hurricane Wind Scale; 1 to 5
+WILDFIRE_THRESHOLD = 3  # Wildland Urban Interface Hazard Scale; 3D scale from 1 to 4 each dimension
+
+OUTGOING_IP_ADDRESS = "0.0.0.0"
+WEB_SOCKET_SERVER_PORT = 8085
+BACKEND_SERVER_PORT = 8088
+DATABASE_PORT = 5432
 
 def get_content_length(headers):
     for tp in headers._headers:
@@ -38,8 +44,11 @@ def severity_threshold(type, severity):
         return severity >= EARTHQUAKE_THRESHOLD
     elif type == "hurricane":
         return severity >= HURRICANE_THRESHOLD
+    elif type == "wildfire":
+        return severity >= WILDFIRE_THRESHOLD
     else:
-        raise NotImplementedError("Natural disaster type " + str(type) + " is not currently supported in determining severity.")
+        print("[ WARNING ] Natural disaster type " + str(type) + " is not currently supported in determining severity.")
+        return False
 
 
 class CustomRequestHandler(BaseHTTPRequestHandler):
@@ -103,7 +112,7 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
             response = CustomRequestHandler.POST_REQUESTS[self.path](database, body_json)
 
         except KeyError as _:
-            print("Invalid path " + str(self.path) + " received.")
+            print("[ ERROR ] Invalid path " + str(self.path) + " received.")
             response = {"success": False, "failure_reason": "Invalid path " + str(self.path) + "."}
 
         # send JSON response back to client
@@ -111,8 +120,8 @@ class CustomRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(json_response.encode())
         return True
 
-def run_main_server(server_class=HTTPServer, handler_class=CustomRequestHandler, port=8088):
-    server_address = ('0.0.0.0', port)
+def run_main_server(server_class=HTTPServer, handler_class=CustomRequestHandler, port=BACKEND_SERVER_PORT):
+    server_address = (OUTGOING_IP_ADDRESS, port)
     httpd = server_class(server_address, handler_class)
     print('Server running at localhost:' + str(port) + '...')
     httpd.serve_forever()
@@ -121,16 +130,18 @@ async def get_disaster(websocket, path):
     while(True):
         disaster = await websocket.recv()
         disaster_id = str(uuid())
-        database.log_disaster(disaster_id, disaster["type"], disaster["latitude"], disaster["longitude"], disaster["radius"], disaster["severity"])
+        print(disaster)
+        disaster_parsed = json.loads(disaster)
+        database.log_disaster(disaster_id, disaster_parsed["type"], disaster_parsed["latitude"], disaster_parsed["longitude"], disaster_parsed["radius"], disaster_parsed["severity"])
 
 def start_socket_loop(loop):
     asyncio.set_event_loop(loop)
-    socket_server = websockets.serve(get_disaster, 'localhost', 8085)
+    socket_server = websockets.serve(get_disaster, OUTGOING_IP_ADDRESS, WEB_SOCKET_SERVER_PORT)
     loop.run_until_complete(socket_server)
     loop.run_forever()
 
 if __name__ == '__main__':
-    database = Database("localhost", 5432, "disasterguide", "postgres", "postgres")
+    database = Database("localhost", DATABASE_PORT, "disasterguide", "postgres", "postgres")
     t = Thread(target=start_socket_loop, args=(asyncio.get_event_loop(),))
     t.start()
 
