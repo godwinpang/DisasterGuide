@@ -22,11 +22,22 @@ class ViewController: UIViewController {
     
 
 
-    
+    func requestTranscribePermissions() {
+        SFSpeechRecognizer.requestAuthorization { authStatus in
+            DispatchQueue.main.async {
+                if authStatus == .authorized {
+                    print("Good to go!")
+                } else {
+                    print("Transcription permission was declined.")
+                }
+            }
+        }
+    }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.requestTranscribePermissions()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
